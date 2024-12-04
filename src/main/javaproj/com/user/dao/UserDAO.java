@@ -12,24 +12,22 @@ import java.util.List;
 
 import com.user.model.User;
 
-public class UserDAO<Gender> {
-	
-	private String jdbcURL = "jdbc:mysql://localhost:3306/dating_platform";
+public class UserDAO {
+
+    private String jdbcURL = "jdbc:mysql://localhost:3306/dating_platform";
     private String jdbcUsername = "root";
     private String jdbcPassword = "Admin@123";
 
     private static final String INSERT_USER_SQL = "INSERT INTO users (first_name, last_name, email, password, date_of_birth, gender) VALUES (?, ?, ?, ?, ?, ?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
-    private static final String DELETE_USER_SQL = "DELETE FROM users WHERE user_id = ?;";
+    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE user_id = ?;";
     private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, date_of_birth = ?, gender = ? WHERE user_id = ?;";
-	private static final String DELETE_USERS_SQL = null;
-	
+
     public UserDAO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-    
+        super();
+    }
+
     public Connection getConnection() {
         Connection connection = null;
         try {
@@ -37,16 +35,12 @@ public class UserDAO<Gender> {
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return connection;
     }
-    
-    
+
     public void insertUser(User user) {
-        UserDAO dao = new UserDAO();
-        try (Connection connection = dao.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL)) {
 
             preparedStatement.setString(1, user.getFirstName());
@@ -61,13 +55,12 @@ public class UserDAO<Gender> {
             e.printStackTrace();
         }
     }
-    
+
     public User selectUser(int id) {
         User user = null;
-        UserDAO dao = new UserDAO();
-        try (Connection connection = dao.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
-             
+
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -87,11 +80,10 @@ public class UserDAO<Gender> {
         }
         return user;
     }
-    
+
     public List<User> selectAllUsers() {
         List<User> users = new ArrayList<>();
-        UserDAO dao = new UserDAO();
-        try (Connection connection = dao.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -113,24 +105,18 @@ public class UserDAO<Gender> {
         }
         return users;
     }
-    
+
     public boolean deleteUser(int id) {
         boolean status = false;
-        UserDAO dao = new UserDAO();
-        try (Connection connection = dao.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL)) {
 
             preparedStatement.setInt(1, id);
             int rowsAffected = preparedStatement.executeUpdate();
-            status = rowsAffected > 0; // Set status to true if the user was deleted successfully
+            status = rowsAffected > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return status;
     }
-
-    
-
-
-
 }
