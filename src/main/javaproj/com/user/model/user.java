@@ -2,7 +2,7 @@ package com.user.model;
 
 import java.time.LocalDate;
 
-public class User {
+public class user {
 
     private int userId;
     private String firstName;
@@ -13,11 +13,11 @@ public class User {
     private Gender gender;
     private LocalDate registrationDate;
 
-    public User() {
+    public user() {
         super();
     }
 
-    public User(int userId, String firstName, String lastName, String email, String password, LocalDate dateOfBirth,
+    public user(int userId, String firstName, String lastName, String email, String password, LocalDate dateOfBirth,
                 Gender gender, LocalDate registrationDate) {
         super();
         this.userId = userId;
