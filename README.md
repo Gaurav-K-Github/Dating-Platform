@@ -15,3 +15,4 @@ cd dating-platform
 
 # Start the application (automated setup & deploy)
 .\start-app.ps1
+
